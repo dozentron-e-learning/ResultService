@@ -1,9 +1,11 @@
-class Result
+class Api::V1::Result
   include Mongoid::Document
 
   STRONG_PARAMETERS = %i[
     status
     name
+    exercise_id
+    submission_id
     classname
     time
     failure_message
@@ -13,6 +15,8 @@ class Result
 
   field :status, type: Symbol
   field :name, type: String
+  field :exercise_id, type: String
+  field :submission_id, type: String
   field :classname, type: String
   field :time, type: Float
   field :failure_message, type: String
@@ -22,6 +26,8 @@ class Result
   validates :status, presence: true
   validates :name, presence: true
   validates :classname, presence: true
+  validates :exercise_id, presence: true
+  validates :submission_id, presence: true
 
   with_options unless: :success? do |opts|
     opts.validates :failure_message, presence: true

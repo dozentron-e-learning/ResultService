@@ -1,9 +1,9 @@
-class ResultsController < ApplicationController
+class Api::V1::ResultsController < ApplicationController
   before_action :set_result, only: [:show, :update, :destroy]
 
   # GET /results
   def index
-    @results = Result.all
+    @results = Api::V1::Result.all
 
     render json: @results
   end
@@ -17,14 +17,14 @@ class ResultsController < ApplicationController
   # POST /results
   def create
     #TODO we need to look into the need for transactions in mongodb
-    #Result.with_session do |session|
+    #Api::V1::Result.with_session do |session|
       #session.start_transaction
       @results = []
       result_params = params.fetch(:result, {})
 
       result_params.each do |rp|
-        permitted_rp = rp.permit(*Result::STRONG_PARAMETERS)
-        result = Result.new(permitted_rp)
+        permitted_rp = rp.permit(*Api::V1::Result::STRONG_PARAMETERS)
+        result = Api::V1::Result.new(permitted_rp)
         result.save!
 
         @results << result
@@ -53,11 +53,11 @@ class ResultsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_result
-      @result = Result.find(params[:id])
+      @result = Api::V1::Result.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.
     def result_params
-      params.fetch(:result, {}).permit *Result::STRONG_PARAMETERS
+      params.fetch(:result, {}).permit *Api::V1::Result::STRONG_PARAMETERS
     end
 end
